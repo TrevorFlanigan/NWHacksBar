@@ -5,8 +5,7 @@ db = SQLAlchemy()
 
 app = Flask(__name__)
 
-
-route("/")
+@app.route("/")
 def home():
     return "Hello, flask!"
 
