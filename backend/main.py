@@ -35,14 +35,15 @@ def create_user():
     user.save()
     return jsonify(user.to_json())
 
-@app.route('/getUser', methods=['GET'])
-def query_records():
+@app.route('/user/info', methods=['GET'])
+def get_user_info():
     name = request.args.get('name')
     user = Users.objects(name=name).first()
     if not user:
         return jsonify({'error': 'data not found'})
     else:
         return jsonify(user.to_json())
+
 
 
 if __name__ == "__main__":
