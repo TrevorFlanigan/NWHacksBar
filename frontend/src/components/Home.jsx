@@ -79,7 +79,6 @@ const Home = () => {
             <TextField
               label="Age"
               type="number"
-              limit="99"
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
