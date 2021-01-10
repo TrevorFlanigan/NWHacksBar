@@ -51,7 +51,7 @@ def join_bar(data):
     user = Users(name=data['name'],
                  age=data['age'])
     user.save()
-    standing_clients.append({'username': user.name})
+    standing_clients.append(user.name)
 
 
 # Join a room
@@ -62,14 +62,14 @@ def join_specific_room(data):
     username = data['name']
 
     # storing name at table location in client array
-    standing_clients.remove({'username': username})
-    table_clients[room].append({'username': username})
+    standing_clients.remove(username)
+    table_clients[room].append(username)
 
     join_room(room)
     # send(username + ' has entered the room.', room=room)
     # this emits a message to everyone except the client who has just joined
     emit('joining', "new person has joined", room=room)
-    emit('update', 'standing', standing_clients, 'tables', table_clients)
+    emit('update', standing=standing_clients, tables=table_clients)
 
 
 # Leave a room
@@ -80,13 +80,13 @@ def leave_a_room(data):
     leave_room(room)
 
     # removes client from certain table
-    standing_clients.append({'username': username})
-    table_clients[room].remove({'username': username})
+    standing_clients.append(username)
+    table_clients[room].remove(username)
 
     # this emits a message to everyone who is left in the room
     # send(username + ' has left the room.', room=room)
     emit('leaveRoom', "person has left", room=room)
-    emit('update', 'standing', standing_clients, 'tables', table_clients)
+    emit('update', standing=standing_clients, tables=table_clients)
 
 
 # Receive a message from the chat in a specific room
