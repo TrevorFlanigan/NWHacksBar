@@ -52,6 +52,7 @@ const BarPage = () => {
 
   const joinTable = (number) => {
     socket.emit("joinRoom", {"room": number, "name": name});
+    history.push("/tableOne");
   };
 
 useEffect(() => {socket.on('joining', (data) => {console.log(data)})});

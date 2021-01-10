@@ -62,12 +62,7 @@ def leave_a_room(data):
     leave_room(room)
     #this emits a message to everyone who is left in the room
     #send(username + ' has left the room.', room=room)
-    emit('joining', "person has left", room=room)
-
-@socketio.on("broadcast")
-def broadcast(data):
-    #send('hi room 1', room=data['room'])
-    emit('room1broadcast', room=data['room'])
+    emit('leaveRoom', "person has left", room=room)
 
 @socketio.on('Wants Random Partner')
 def begin__random_room(sid):
