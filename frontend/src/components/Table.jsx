@@ -5,6 +5,7 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
+import LocalBarIcon from '@material-ui/icons/LocalBar';
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -35,6 +36,7 @@ const useStyles = makeStyles({
     textAlign: "center",
     fontSize: "clamp(20px, 10vw, 400px)",
     justifyContent: "center",
+    fontFamily: "Copperplate",
   },
   body: {
     display: "flex",
@@ -74,7 +76,7 @@ const Table = (props) => {
   const [message, setMessage] = useState("");
   useEffect(() => {
     socket.on("postMessage", (data) => {
-      console.log(data);
+      console.log("incoming data to go in chat: ", data);
       setMessages([...messages, data]);
       console.log(messages);
     });
@@ -105,9 +107,9 @@ const Table = (props) => {
     >
       <Container className={classes.root}>
         <Container className={classes.header}>
-          <div className={classes.headerText}>Room {id}</div>
+          <div className={classes.headerText}>Table {id} <div><LocalBarIcon fontSize='large'/></div></div>
           <div className={classes.body}>
-            <p>Welcome to Room {id}!</p>
+            <p>Welcome to Table {id}!</p>
             <Paper className={classes.chat}>
               chat goes here
               <div className={classes.upper}>upper</div>
@@ -126,7 +128,7 @@ const Table = (props) => {
                 />
               </div>
             </Paper>
-            <Button onClick={() => leaveTable()}>Leave Room</Button>
+            <Button onClick={() => leaveTable()}>Leave Table</Button>
           </div>
         </Container>
       </Container>

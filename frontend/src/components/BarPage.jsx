@@ -35,11 +35,34 @@ const useStyles = makeStyles({
     textAlign: "center",
     fontSize: "clamp(20px, 10vw, 400px)",
     justifyContent: "center",
+    fontFamily: "Courier New"
+  },
+  table: {
+    minHeight: "100px",
+    height: "50%",
+    maxHeight: "200px",
+    display: "flex",
+    flexDirection: "column",
+    width: "66%",
+    minWidth: "100px",
+    background: "	#481F01",
   },
   body: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     flex: "1 0 300px",
+    justifyContent: "center",
+  },
+  eachTable: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "1.5%",
+    justifyContent: "center",
+  },
+  participants: {
+    display: "flex",
+    justifyContent: "left",
+    
   },
 });
 const BarPage = () => {
@@ -72,14 +95,20 @@ const BarPage = () => {
     >
       <Container className={classes.root}>
         <Container className={classes.header}>
-          <div className={classes.headerText}>The Bar</div>
+          <div className={classes.headerText}>Space Bar</div>
+         
           <div className={classes.body}>
             {" "}
-            <p>hello</p>
+            
             {[...Array(6)].map((_, index) => (
-              <Button onClick={() => joinTable("one")}>
-                Table {index + 1}
+              <Container className={classes.eachTable}>
+              <Button className={classes.table} onClick={() => joinTable(index + 1)}>
+                <div style={{ color: 'white' }}>Table {index + 1}</div>
               </Button>
+              <Paper className={classes.participants}>
+              Participants:
+            </Paper>
+              </Container>
             ))}
           </div>
         </Container>
