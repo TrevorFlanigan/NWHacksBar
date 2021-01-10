@@ -36,6 +36,17 @@ def test_connect():
     print("Connected")
     emit('after connect',  {'data':'Lets dance'})
 
+#This adds the users data to our database
+@socketio.on('join')
+def join_bar(data):
+    user = Users(name=data['name'],
+                age=data['age'])
+    user.save()
+
+@socketio.on('Wants Random Partner')
+def begin__random_room(sid):
+    join_room(sid, 'random1')
+
 @socketio.on('Wants Specific Room')
 def begin_specific_room(sid, room_name):
     join_room(sid, room_name)

@@ -71,6 +71,10 @@ const Home = () => {
 
   const history = useHistory();
 
+  const join = () => {
+      socket.emit("join", {"name": name, "age": age})
+  }
+
   return (
     <div
       style={{
@@ -101,7 +105,7 @@ const Home = () => {
               <Button
                 className={classes.startButton}
                 variant="contained"
-                onClick={() => history.push("/bar")}
+                onClick={join}
                 color="primary"
               >
                 JOIN
