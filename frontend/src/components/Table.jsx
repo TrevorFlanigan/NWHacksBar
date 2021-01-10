@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useUserState } from "./App";
 
 import socket from "./Socket";
 
@@ -56,12 +57,22 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
+    border: "1px solid black",
+    margin: "10px",
+    borderRadius: 10,
+    padding: 10,
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   lower: {
     display: "flex",
     flexBasis: "50px",
+    justifyContent: "center",
   },
-  textField: {},
+  textField: {
+    fontFamily: "Work Sans",
+  },
 });
 const Table = (props) => {
   let params = useParams();
@@ -72,13 +83,25 @@ const Table = (props) => {
   const [age, setAge] = useState();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+
+  const userState = useUserState();
+
   useEffect(() => {
+    if (!userState.name || !userState.age) {
+      history.replace("/");
+    }
+    joinTable(id);
     socket.on("postMessage", (data) => {
+      setMessages((messages) => [...messages, data]);
+    });
+    socket.on("joining", (data) => {
       console.log(data);
-      setMessages([...messages, data]);
-      console.log(messages);
     });
   }, []);
+
+  const joinTable = (number) => {
+    socket.emit("joinRoom", { room: number, name: name });
+  };
 
   const history = useHistory();
 
@@ -90,7 +113,11 @@ const Table = (props) => {
   const sendMessage = () => {
     if (message === "") return;
     console.log("Message: ", message);
-    socket.emit("chatMessage", { message: message, room: id });
+    socket.emit("chatMessage", {
+      message: message,
+      room: id,
+      author: { name: userState.name, age: userState.age },
+    });
     setMessage("");
   };
 
@@ -105,17 +132,27 @@ const Table = (props) => {
     >
       <Container className={classes.root}>
         <Container className={classes.header}>
-          <div className={classes.headerText}>Room {id}</div>
+          <div className={classes.headerText} />
           <div className={classes.body}>
-            <p>Welcome to Room {id}!</p>
+            <p>Welcome to Table {id}!</p>
             <Paper className={classes.chat}>
-              chat goes here
-              <div className={classes.upper}>upper</div>
+              <div className={classes.upper}>
+                {messages.map((m) => {
+                  let { name, age } = m.author;
+                  return (
+                    <div>
+                      {`${name}, ${age}`}: {m.message}
+                    </div>
+                  );
+                })}
+              </div>
               <div className={classes.lower}>
                 <TextField
                   label="Chat"
-                  value={message}
                   className={classes.textField}
+                  InputLabelProps={{ className: classes.textField }}
+                  InputProps={{ className: classes.textField }}
+                  value={message}
                   onKeyUp={(e) => {
                     if (e.key === "Enter") {
                       console.log("SEND");

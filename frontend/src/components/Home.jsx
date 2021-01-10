@@ -6,9 +6,10 @@ import {
   TextField,
 } from "@material-ui/core";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { createContext, useEffect } from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useUserDispatch } from "./App";
 
 import socket from "./Socket";
 
@@ -63,17 +64,20 @@ const useStyles = makeStyles({
     justifyContent: "space-evenly",
   },
 });
+
 const Home = () => {
   const classes = useStyles();
+  const dispatch = useUserDispatch();
 
   const [name, setName] = useState("");
   const [age, setAge] = useState();
-
   const history = useHistory();
 
   const join = () => {
-      socket.emit("join", {"name": name, "age": age});
-      history.push("/bar");
+    socket.emit("join", { name: name, age: age });
+    dispatch({ type: "updateName", payload: { name } });
+    dispatch({ type: "updateAge", payload: { age } });
+    history.push("/bar");
   };
 
   return (
@@ -108,6 +112,7 @@ const Home = () => {
                 variant="contained"
                 onClick={join}
                 color="primary"
+                disabled={!age || !name}
               >
                 JOIN
               </Button>
