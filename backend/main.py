@@ -52,6 +52,7 @@ def join_bar(data):
                  age=data['age'])
     user.save()
     standing_clients.append(user.name)
+    emit('update', standing=standing_clients, tables=table_clients)
 
 
 # Join a room
