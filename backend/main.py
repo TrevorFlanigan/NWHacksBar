@@ -36,17 +36,17 @@ def test_connect():
     print("Connected")
     emit('after connect',  {'data':'Lets dance'})
 
-@socketio.on('Wants Random Partner')
-def begin__random_room(sid):
-    join_room(sid, 'random1')
-
 @socketio.on('Wants Specific Room')
 def begin_specific_room(sid, room_name):
     join_room(sid, room_name)
+    #this emits a message to everyone except the client who has just joined
+    emit('joining', "new person has joined", room=room_name, skip_sid=sid)
 
 @socketio.on('Leave Room')
 def leave_a_room(sid, room_name):
     leave_room(sid, room_name)
+    #this emits a message to everyone who is left in the room
+    emit('joining', "person has left", room=room_name)
 
 @socketio.on('hello')
 def test_hello(data):
