@@ -75,6 +75,10 @@ const Home = () => {
       socket.emit("join", {"name": name, "age": age})
   }
 
+  const join_table = (tableid) => {
+      socket.emit("join_table", {"name": name, "age": age, "tableid": tableid})
+  }
+
   return (
     <div
       style={{
@@ -109,6 +113,15 @@ const Home = () => {
                 color="primary"
               >
                 JOIN
+              </Button>
+
+              <Button
+                className={classes.startButton}
+                variant="contained"
+                onClick={() => join_table(1)}
+                color="primary"
+              >
+                Join Table
               </Button>
             </div>
           </Paper>

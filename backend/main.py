@@ -24,6 +24,12 @@ class Users(db.Document):
         return {"name": self.name,
                 "age": self.age}
 
+class Tables(db.Document):
+    members = db.ListField()
+    def to_json(self):
+        return {"name": self.name,
+                "age": self.age}
+
 # Handler for default flask route
 # Using jinja template to render html along with slider value as input
 @app.route('/')
@@ -39,6 +45,13 @@ def test_connect():
 #This adds the users data to our database
 @socketio.on('join')
 def join_bar(data):
+    user = Users(name=data['name'],
+                age=data['age'])
+    user.save()
+
+#This adds the users data to our database
+@socketio.on('join_table')
+def join_table(data):
     user = Users(name=data['name'],
                 age=data['age'])
     user.save()
