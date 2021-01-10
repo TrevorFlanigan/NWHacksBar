@@ -18,7 +18,7 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine()
 db.init_app(app)
 
-table_clients = [[]]  # clients entered into list indexed by table number
+table_clients = [[]*6]  # clients entered into list indexed by table number
 standing_clients = []
 
 
