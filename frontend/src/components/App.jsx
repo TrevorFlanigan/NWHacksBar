@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import BarPage from "./BarPage";
 import Home from "./Home";
 
 const NotFound = () => {
@@ -11,6 +12,9 @@ const App = () => {
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route exact path="/bar">
+          <BarPage />
         </Route>
         <Route path="*" component={NotFound} />
       </Switch>

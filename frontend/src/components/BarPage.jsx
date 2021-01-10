@@ -36,34 +36,13 @@ const useStyles = makeStyles({
     fontSize: "clamp(20px, 10vw, 400px)",
     justifyContent: "center",
   },
-  card: {
+  body: {
     display: "flex",
     flexDirection: "column",
-    flexGrow: 1,
-    width: "50%",
-    maxWidth: "500px",
-    minHeight: "200px",
-    height: "60%",
-    maxHeight: "500px",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
-  startButton: {
-    fontFamily: "Work Sans",
-  },
-  bottom: {
-    display: "flex",
-    flexDirection: "column",
-    flex: "1 1 75%",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    height: "200px",
-    justifyContent: "space-evenly",
+    flex: "1 0 300px",
   },
 });
-const Home = () => {
+const BarPage = () => {
   const classes = useStyles();
 
   const [name, setName] = useState("");
@@ -82,36 +61,24 @@ const Home = () => {
     >
       <Container className={classes.root}>
         <Container className={classes.header}>
-          <div className={classes.headerText}>ePub</div>
-          <Paper className={classes.card}>
-            <h1>Join the Bar</h1>
-            <div className={classes.form}>
-              <TextField
-                label="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <TextField
-                label="Age"
-                type="number"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-              />
-
-              <Button
-                className={classes.startButton}
-                variant="contained"
-                onClick={() => history.push("/bar")}
-                color="primary"
-              >
-                JOIN
-              </Button>
-            </div>
-          </Paper>
+          <div className={classes.headerText}>The Bar</div>
+          <div className={classes.body}>
+            {" "}
+            <p>hello</p>
+            <Button>Table 1</Button>
+            <Button>Table 2</Button>
+            <Button>Table 3</Button>
+            <Button>Table 4</Button>
+            <Button>Table 5</Button>
+            <Button>Table 6</Button>
+            <Button>Table 7</Button>
+            <Button>Table 8</Button>
+            <Button>Table 9</Button>
+          </div>
         </Container>
       </Container>
     </div>
   );
 };
 
-export default Home;
+export default BarPage;
