@@ -8,10 +8,10 @@ import {
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import { useUserState } from "./App";
 
 import socket from "./Socket";
-
 const useStyles = makeStyles({
   root: {
     background:
@@ -49,10 +49,16 @@ const BarPage = () => {
   const [age, setAge] = useState();
 
   const history = useHistory();
+  const userState = useUserState();
 
   const joinTable = (number) => {
     history.push(`/table/${number}`);
   };
+
+  console.log(userState);
+  if (!userState.name || !userState.age) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div
