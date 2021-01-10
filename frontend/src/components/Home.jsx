@@ -58,6 +58,18 @@ const Home = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState();
 
+  const handleCreateUser = async () => {
+    let res = await fetch("/user/create", {
+      method: "PUT",
+      body: JSON.stringify({
+        name,
+        age,
+      }),
+    });
+    if (res.ok) {
+      console.log("it worked");
+    }
+  };
   return (
     <div
       style={{
@@ -83,7 +95,11 @@ const Home = () => {
               onChange={(e) => setAge(e.target.value)}
             />
 
-            <Button className={classes.startButton} variant="contained">
+            <Button
+              className={classes.startButton}
+              variant="contained"
+              onClick={handleCreateUser}
+            >
               GET STARTED
             </Button>
           </Paper>
