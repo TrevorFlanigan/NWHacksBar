@@ -64,6 +64,13 @@ def leave_a_room(data):
     #send(username + ' has left the room.', room=room)
     emit('leaveRoom', "person has left", room=room)
 
+# Receive a message from the chat in a specific room
+@socketio.on('chatMessage')
+def send_into_chat(data):
+    room = data['room']
+    message = data['message']
+    emit('postMessage', message, room=room)
+
 @socketio.on('Wants Random Partner')
 def begin__random_room(sid):
     join_room(sid, 'random1')
