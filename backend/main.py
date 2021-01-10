@@ -67,6 +67,9 @@ def leave_a_room(data):
 # Receive a message from the chat in a specific room
 @socketio.on('chatMessage')
 def send_into_chat(data):
+    print(data["message"])
+    print(data["room"])
+
     room = data['room']
     message = data['message']
     emit('postMessage', message, room=room)

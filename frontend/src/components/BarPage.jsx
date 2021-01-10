@@ -77,7 +77,7 @@ const BarPage = () => {
             {" "}
             <p>hello</p>
             {[...Array(6)].map((_, index) => (
-              <Button onClick={() => joinTable(index + 1)}>
+              <Button onClick={() => joinTable("one")}>
                 Table {index + 1}
               </Button>
             ))}

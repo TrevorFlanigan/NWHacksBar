@@ -66,7 +66,6 @@ const useStyles = makeStyles({
 const Table = (props) => {
   let params = useParams();
   let { id } = params;
-  console.log(id);
   const classes = useStyles();
 
   const [name, setName] = useState("");
@@ -75,20 +74,24 @@ const Table = (props) => {
   const [message, setMessage] = useState("");
   useEffect(() => {
     socket.on("postMessage", (data) => {
+      console.log(data);
       setMessages([...messages, data]);
+      console.log(messages);
     });
   }, []);
 
   const history = useHistory();
 
   const leaveTable = () => {
-    socket.emit("leaveRoom", { room: { id }, name: name });
+    socket.emit("leaveRoom", { room: id, name: name });
     history.push("/bar");
   };
 
   const sendMessage = () => {
     if (message === "") return;
-    socket.emit("chatMessage", message);
+    console.log("Message: ", message);
+    socket.emit("chatMessage", { message: message, room: id });
+    setMessage("");
   };
 
   return (
@@ -111,8 +114,14 @@ const Table = (props) => {
               <div className={classes.lower}>
                 <TextField
                   label="Chat"
+                  value={message}
                   className={classes.textField}
-                  onSubmit={sendMessage}
+                  onKeyUp={(e) => {
+                    if (e.key === "Enter") {
+                      console.log("SEND");
+                      sendMessage();
+                    }
+                  }}
                   onChange={(e) => setMessage(e.target.value)}
                 />
               </div>
