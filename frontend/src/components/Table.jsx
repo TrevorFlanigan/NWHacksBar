@@ -8,7 +8,7 @@ import {
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 import socket from "./Socket";
 
@@ -42,7 +42,10 @@ const useStyles = makeStyles({
     flex: "1 0 300px",
   },
 });
-const BarPage = () => {
+const Table = (props) => {
+  let params = useParams();
+  let { id } = params;
+  console.log(id);
   const classes = useStyles();
 
   const [name, setName] = useState("");
@@ -50,16 +53,10 @@ const BarPage = () => {
 
   const history = useHistory();
 
-  const joinTable = (number) => {
-    socket.emit("joinRoom", { room: number, name: name });
-    history.push(`/table/${number}`);
+  const leaveTable = () => {
+    socket.emit("leaveRoom", { room: { id }, name: name });
+    history.push("/bar");
   };
-
-  useEffect(() => {
-    socket.on("joining", (data) => {
-      console.log(data);
-    });
-  });
 
   return (
     <div
@@ -72,15 +69,10 @@ const BarPage = () => {
     >
       <Container className={classes.root}>
         <Container className={classes.header}>
-          <div className={classes.headerText}>The Bar</div>
+          <div className={classes.headerText}>Room {id}</div>
           <div className={classes.body}>
-            {" "}
-            <p>hello</p>
-            {[...Array(6)].map((_, index) => (
-              <Button onClick={() => joinTable(index + 1)}>
-                Table {index + 1}
-              </Button>
-            ))}
+            <p>Welcome to Room {id}!</p>
+            <Button onClick={() => leaveTable()}>Leave Room</Button>
           </div>
         </Container>
       </Container>
@@ -88,4 +80,4 @@ const BarPage = () => {
   );
 };
 
-export default BarPage;
+export default Table;
