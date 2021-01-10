@@ -5,7 +5,11 @@ import {
   Button,
   TextField,
 } from "@material-ui/core";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 import { useState } from "react";
+
+import socket from "./Socket";
 
 const useStyles = makeStyles({
   root: {
@@ -58,6 +62,10 @@ const Home = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState();
 
+  const handleSocketConnect = () => {
+    socket.emit("hello");
+  };
+
   const handleCreateUser = async () => {
     let res = await fetch("/user/create", {
       method: "PUT",
@@ -67,7 +75,11 @@ const Home = () => {
       }),
     });
     if (res.ok) {
+      let user = await res.json();
+      Cookies.set("user", user);
       console.log("it worked");
+    } else {
+      console.log("Something Bad Happened");
     }
   };
   return (
@@ -102,6 +114,7 @@ const Home = () => {
             >
               GET STARTED
             </Button>
+            <Button onClick={() => handleSocketConnect()}>Test socket</Button>
           </Paper>
         </Container>
       </Container>
