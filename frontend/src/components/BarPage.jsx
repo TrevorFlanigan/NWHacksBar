@@ -71,6 +71,8 @@ const BarPage = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState();
 
+  const [tables, setTables] = useState([]);
+
   const history = useHistory();
   const userState = useUserState();
 
@@ -78,10 +80,19 @@ const BarPage = () => {
     history.push(`/table/${number}`);
   };
 
+  useEffect(() => {
+    socket.on("update", (data) => {
+      setTables(data);
+      console.log(data);
+    });
+  },[]);
+
   console.log(userState);
   if (!userState.name || !userState.age) {
     return <Redirect to="/" />;
   }
+
+  
 
   return (
     <div
@@ -106,6 +117,8 @@ const BarPage = () => {
               </Button>
               <Paper className={classes.participants}>
               Participants:
+              {console.log(tables)}
+              {tables[index]}
             </Paper>
               </Container>
             ))}

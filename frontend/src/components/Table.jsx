@@ -102,13 +102,13 @@ const Table = (props) => {
   }, []);
 
   const joinTable = (number) => {
-    socket.emit("joinRoom", { room: number, name: name });
+    socket.emit("joinRoom", { room: number, name: userState.name });
   };
 
   const history = useHistory();
 
   const leaveTable = () => {
-    socket.emit("leaveRoom", { room: id, name: name });
+    socket.emit("leaveRoom", { room: id, name: userState.name });
     history.push("/bar");
   };
 

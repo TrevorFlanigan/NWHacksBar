@@ -24,6 +24,24 @@ class Users(db.Document):
         return {"name": self.name,
                 "age": self.age}
 
+table_clients = [[],[],[],[],[],[]]  # clients entered into list indexed by table number
+print(table_clients)
+standing_clients = []
+
+def number(room):
+    if room == "one":
+        return 0
+    elif room == "two":
+        return 1
+    elif room == "three":
+        return 2
+    elif room == "four":
+        return 3
+    elif room == "five":
+        return 4
+    elif room == "six":
+        return 5
+
 # Handler for default flask route
 # Using jinja template to render html along with slider value as input
 @app.route('/')
@@ -42,6 +60,8 @@ def join_bar(data):
     user = Users(name=data['name'],
                 age=data['age'])
     user.save()
+    standing_clients.append(user.name)
+    emit('update', table_clients)
 
 # Join a room
 @socketio.on('joinRoom')
@@ -50,9 +70,19 @@ def join_specific_room(data):
     room = data['room']
     username = data['name']
     join_room(room)
+
+    #standing_clients.remove(username)
+    table_clients[int(room) - 1].append(username)
     #send(username + ' has entered the room.', room=room)
     #this emits a message to everyone except the client who has just joined
     emit('joining', "new person has joined", room=room)
+    """data = {
+        tables: table_clients,
+    }"""
+    emit('update', table_clients)
+    print(table_clients)
+
+    #print(data)
 
 # Leave a room
 @socketio.on('leaveRoom')
@@ -60,15 +90,30 @@ def leave_a_room(data):
     room = data['room']
     username = data['name']
     leave_room(room)
+
+    # removes client from certain table
+    #standing_clients.append(username)
+    table_clients[int(room) - 1].remove(username)
+
     #this emits a message to everyone who is left in the room
     #send(username + ' has left the room.', room=room)
     emit('leaveRoom', "person has left", room=room)
+    """data = {
+        tables: table_clients,
+    }"""
+    emit('update', table_clients)
+    print(table_clients)
+
 
 # Receive a message from the chat in a specific room
 @socketio.on('chatMessage')
 def send_into_chat(data):
-    room = data["room"]
-    emit('postMessage', data, room=room)
+    print(data["message"])
+    print(data["room"])
+
+    room = data['room']
+    message = data['message']
+    emit('postMessage', message, room=room)
 
 @socketio.on('Wants Random Partner')
 def begin__random_room(sid):
