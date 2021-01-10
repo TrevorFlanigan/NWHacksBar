@@ -72,8 +72,9 @@ const Home = () => {
   const history = useHistory();
 
   const join = () => {
-      socket.emit("join", {"name": name, "age": age})
-  }
+      socket.emit("join", {"name": name, "age": age});
+      history.push("/bar");
+  };
 
   return (
     <div

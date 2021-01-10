@@ -50,6 +50,12 @@ const BarPage = () => {
 
   const history = useHistory();
 
+  const joinTable = (number) => {
+    socket.emit("joinRoom", {"room": number, "name": name});
+  };
+
+useEffect(() => {socket.on('joining', (data) => {console.log(data)})});
+
   return (
     <div
       style={{
@@ -59,14 +65,22 @@ const BarPage = () => {
         alignItems: "center",
       }}
     >
+
       <Container className={classes.root}>
         <Container className={classes.header}>
           <div className={classes.headerText}>The Bar</div>
           <div className={classes.body}>
             {" "}
             <p>hello</p>
-            <Button>Table 1</Button>
-            <Button>Table 2</Button>
+            <Button
+              onClick={() => joinTable("one")}
+            >
+              Table 1
+            </Button>
+            <Button
+              onClick={() => joinTable("two")}
+            >
+              Table 2</Button>
             <Button>Table 3</Button>
             <Button>Table 4</Button>
             <Button>Table 5</Button>

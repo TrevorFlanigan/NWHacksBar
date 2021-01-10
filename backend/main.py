@@ -43,17 +43,35 @@ def join_bar(data):
                 age=data['age'])
     user.save()
 
+# Join a room
+@socketio.on('joinRoom')
+def join_specific_room(data):
+    #join_room(sid, room_name)
+    room = data['room']
+    username = data['name']
+    join_room(room)
+    #send(username + ' has entered the room.', room=room)
+    #this emits a message to everyone except the client who has just joined
+    emit('joining', "new person has joined", room=room)
+
+# Leave a room
+@socketio.on('leaveRoom')
+def leave_a_room(data):
+    room = data['room']
+    username = data['name']
+    leave_room(room)
+    #this emits a message to everyone who is left in the room
+    #send(username + ' has left the room.', room=room)
+    emit('joining', "person has left", room=room)
+
+@socketio.on("broadcast")
+def broadcast(data):
+    #send('hi room 1', room=data['room'])
+    emit('room1broadcast', room=data['room'])
+
 @socketio.on('Wants Random Partner')
 def begin__random_room(sid):
     join_room(sid, 'random1')
-
-@socketio.on('Wants Specific Room')
-def begin_specific_room(sid, room_name):
-    join_room(sid, room_name)
-
-@socketio.on('Leave Room')
-def leave_a_room(sid, room_name):
-    leave_room(sid, room_name)
 
 @socketio.on('hello')
 def test_hello(data):
