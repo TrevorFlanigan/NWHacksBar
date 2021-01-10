@@ -89,7 +89,7 @@ const Home = () => {
         <Container className={classes.header}>
           <div className={classes.headerText}>ePub</div>
           <Paper className={classes.card}>
-            <h1>Join the Bar</h1>
+            <h1>Join Space Bar</h1>
             <div className={classes.form}>
               <TextField
                 label="Name"

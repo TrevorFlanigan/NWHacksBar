@@ -42,7 +42,11 @@ const useStyles = makeStyles({
     flex: "1 0 300px",
   },
 });
+
+
 const BarPage = () => {
+  table_clients = [[]]
+  standing_clients = []
   const classes = useStyles();
 
   const [name, setName] = useState("");
@@ -61,6 +65,14 @@ const BarPage = () => {
     });
   });
 
+  useEffect(() => {
+    socket.on("update", (data) => {
+      standing_clients = data['standing']
+      table_clients = data['tables']
+    });
+  });
+
+
   return (
     <div
       style={{
@@ -72,13 +84,14 @@ const BarPage = () => {
     >
       <Container className={classes.root}>
         <Container className={classes.header}>
-          <div className={classes.headerText}>The Bar</div>
+          <div className={classes.headerText}>Space Bar</div>
           <div className={classes.body}>
             {" "}
             <p>hello</p>
             {[...Array(6)].map((_, index) => (
               <Button onClick={() => joinTable("one")}>
                 Table {index + 1}
+                table_clients[index]
               </Button>
             ))}
           </div>

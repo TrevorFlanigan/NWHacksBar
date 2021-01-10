@@ -1,0 +1,12 @@
+TO RUN BACKEND
+configure environment : python3 -m venv venv
+then : source venv/bin/activate
+make sure all installed with : pip install -r requirements.txt
+then : python3 main.py
+
+if issues check node version
+
+TO RUN FRONTEND
+
+npm install
+npm start
