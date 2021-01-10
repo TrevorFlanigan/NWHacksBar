@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
 from flask_mongoengine import MongoEngine
 import json
@@ -35,6 +35,18 @@ def index():
 def test_connect():
     print("Connected")
     emit('after connect',  {'data':'Lets dance'})
+
+@socketio.on('Wants Random Partner')
+def begin__random_room(sid):
+    join_room(sid, 'random1')
+
+@socketio.on('Wants Specific Room')
+def begin_specific_room(sid, room_name):
+    join_room(sid, room_name)
+
+@socketio.on('Leave Room')
+def leave_a_room(sid, room_name):
+    leave_room(sid, room_name)
 
 @socketio.on('hello')
 def test_hello(data):
