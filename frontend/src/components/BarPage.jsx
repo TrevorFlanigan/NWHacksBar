@@ -51,15 +51,8 @@ const BarPage = () => {
   const history = useHistory();
 
   const joinTable = (number) => {
-    socket.emit("joinRoom", { room: number, name: name });
     history.push(`/table/${number}`);
   };
-
-  useEffect(() => {
-    socket.on("joining", (data) => {
-      console.log(data);
-    });
-  });
 
   return (
     <div
@@ -77,7 +70,7 @@ const BarPage = () => {
             {" "}
             <p>hello</p>
             {[...Array(6)].map((_, index) => (
-              <Button onClick={() => joinTable("one")}>
+              <Button onClick={() => joinTable(index + 1)}>
                 Table {index + 1}
               </Button>
             ))}

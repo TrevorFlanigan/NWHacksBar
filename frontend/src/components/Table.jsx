@@ -56,6 +56,13 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
+    border: "1px solid black",
+    margin: "10px",
+    borderRadius: 10,
+    padding: 10,
+    display: "flex",
+    flexDirection: "column",
+    boxShadow: "inset 0px 4px 4px rgba(0, 0, 0, 0.25)",
   },
   lower: {
     display: "flex",
@@ -72,13 +79,20 @@ const Table = (props) => {
   const [age, setAge] = useState();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+
   useEffect(() => {
+    joinTable(id);
     socket.on("postMessage", (data) => {
+      setMessages((messages) => [...messages, data]);
+    });
+    socket.on("joining", (data) => {
       console.log(data);
-      setMessages([...messages, data]);
-      console.log(messages);
     });
   }, []);
+
+  const joinTable = (number) => {
+    socket.emit("joinRoom", { room: number, name: name });
+  };
 
   const history = useHistory();
 
@@ -109,8 +123,11 @@ const Table = (props) => {
           <div className={classes.body}>
             <p>Welcome to Room {id}!</p>
             <Paper className={classes.chat}>
-              chat goes here
-              <div className={classes.upper}>upper</div>
+              <div className={classes.upper}>
+                {messages.map((m) => {
+                  return <div>{m}</div>;
+                })}
+              </div>
               <div className={classes.lower}>
                 <TextField
                   label="Chat"
