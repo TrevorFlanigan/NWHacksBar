@@ -8,6 +8,7 @@ import {
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import socket from "./Socket";
 
@@ -55,6 +56,12 @@ const useStyles = makeStyles({
     flexDirection: "column",
     flex: "1 1 75%",
   },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    height: "200px",
+    justifyContent: "space-evenly",
+  },
 });
 const Home = () => {
   const classes = useStyles();
@@ -62,26 +69,8 @@ const Home = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState();
 
-  const handleSocketConnect = () => {
-    socket.emit("hello");
-  };
+  const history = useHistory();
 
-  const handleCreateUser = async () => {
-    let res = await fetch("/user/create", {
-      method: "PUT",
-      body: JSON.stringify({
-        name,
-        age,
-      }),
-    });
-    if (res.ok) {
-      let user = await res.json();
-      Cookies.set("user", user);
-      console.log("it worked");
-    } else {
-      console.log("Something Bad Happened");
-    }
-  };
   return (
     <div
       style={{
@@ -95,26 +84,29 @@ const Home = () => {
         <Container className={classes.header}>
           <div className={classes.headerText}>ePub</div>
           <Paper className={classes.card}>
-            <TextField
-              label="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <TextField
-              label="Age"
-              type="number"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
+            <h1>Join the Bar</h1>
+            <div className={classes.form}>
+              <TextField
+                label="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <TextField
+                label="Age"
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
 
-            <Button
-              className={classes.startButton}
-              variant="contained"
-              onClick={handleCreateUser}
-            >
-              GET STARTED
-            </Button>
-            <Button onClick={() => handleSocketConnect()}>Test socket</Button>
+              <Button
+                className={classes.startButton}
+                variant="contained"
+                onClick={() => history.push("/bar")}
+                color="primary"
+              >
+                JOIN
+              </Button>
+            </div>
           </Paper>
         </Container>
       </Container>

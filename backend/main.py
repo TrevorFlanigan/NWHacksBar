@@ -21,8 +21,9 @@ def test_connect():
     emit('after connect',  {'data':'Lets dance'})
 
 @socketio.on('hello')
-def test_hello():
+def test_hello(data):
     print("hello")
+    print(data)
 
 # Notice how socketio.run takes care of app instantiation as well.
 if __name__ == '__main__':
