@@ -1,12 +1,28 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+from flask_mongoengine import MongoEngine
+import json
 
 app = Flask(__name__)
 cors = CORS(app,resources={r"/api/*":{"origins":"*"}})
 socketio = SocketIO(app, cors_allowed_origins="*")
 app.debug = True
 app.host = '0.0.0.0'
+
+app.config['MONGODB_SETTINGS'] = {
+    'host': 'mongodb+srv://admin:3voLCS1uj0QQ@nwhacksbar.vhrhz.mongodb.net/test?authSource=admin&replicaSet=atlas-dc8ozw-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true',
+}
+
+db = MongoEngine()
+db.init_app(app)
+
+class Users(db.Document):
+    name = db.StringField()
+    age = db.StringField()
+    def to_json(self):
+        return {"name": self.name,
+                "age": self.age}
 
 # Handler for default flask route
 # Using jinja template to render html along with slider value as input
@@ -23,7 +39,10 @@ def test_connect():
 @socketio.on('hello')
 def test_hello(data):
     print("hello")
-    print(data)
+    record = json.loads(data)
+    user = Users(name=record['name'],
+                age=record['age'])
+    user.save()
 
 # Notice how socketio.run takes care of app instantiation as well.
 if __name__ == '__main__':
